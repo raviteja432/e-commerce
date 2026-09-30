@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${paymentStatus == 'SUCCESS'} ? 'Payment Successful' : 'Payment Failed'"></title>
+    <style>
+        body { margin: 0; padding: 0; background: #f4f6f9; font-family: 'Segoe UI', Arial, sans-serif; }
+        .wrapper { max-width: 620px; margin: 30px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .header-success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); padding: 40px 30px; text-align: center; }
+        .header-failed  { background: linear-gradient(135deg, #c94b4b 0%, #4b134f 100%); padding: 40px 30px; text-align: center; }
+        .header h1 { color: #fff; margin: 0; font-size: 26px; font-weight: 700; }
+        .header p  { color: rgba(255,255,255,0.85); margin: 8px 0 0; font-size: 15px; }
+        .badge { display: inline-block; background: rgba(255,255,255,0.2); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 13px; margin-top: 14px; }
+        .body { padding: 32px 30px; }
+        .greeting { font-size: 18px; color: #1a1a2e; font-weight: 600; margin-bottom: 8px; }
+        .intro  { color: #6b7280; font-size: 15px; line-height: 1.6; margin-bottom: 28px; }
+        .section-title { font-size: 13px; font-weight: 700; color: #6366f1; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        .info-card { background: #f8f9ff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px 20px; margin-bottom: 20px; }
+        .info-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { color: #6b7280; }
+        .info-value { color: #1a1a2e; font-weight: 600; }
+        .amount-highlight { color: #11998e; font-size: 20px; font-weight: 700; }
+        .amount-failed    { color: #c94b4b; font-size: 20px; font-weight: 700; }
+        .alert-box { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: 14px 18px; color: #b91c1c; font-size: 14px; margin-bottom: 20px; }
+        .cta { text-align: center; margin: 28px 0; }
+        .cta a { text-decoration: none; padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; display: inline-block; }
+        .cta-success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: #fff; }
+        .cta-failed  { background: linear-gradient(135deg, #c94b4b 0%, #4b134f 100%); color: #fff; }
+        .footer { background: #f8f9ff; padding: 22px 30px; text-align: center; border-top: 1px solid #e5e7eb; }
+        .footer p { color: #9ca3af; font-size: 13px; margin: 4px 0; }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <!-- Header — green for success, red for failed -->
+    <div th:class="${paymentStatus == 'SUCCESS'} ? 'header-success' : 'header-failed'">
+        <h1 th:text="${paymentStatus == 'SUCCESS'} ? '✅ Payment Successful' : '❌ Payment Failed'"></h1>
+        <p th:text="${paymentStatus == 'SUCCESS'} ? 'Your payment has been processed' : 'We could not process your payment'"></p>
+        <span class="badge">Order #<span th:text="${orderId}"></span></span>
+    </div>
+
+    <div class="body">
+        <p class="greeting">Hi <span th:text="${customerName}"></span>,</p>
+        <p class="intro" th:if="${paymentStatus == 'SUCCESS'}">
+            Your payment was processed successfully. Your order is now being prepared for dispatch.
+        </p>
+        <p class="intro" th:if="${paymentStatus != 'SUCCESS'}">
+            Unfortunately, we couldn't process your payment. Your order has been kept on hold.
+            Please try again or use a different payment method.
+        </p>
+
+        <!-- Failure reason -->
+        <div class="alert-box" th:if="${paymentStatus != 'SUCCESS' and failureReason != null}">
+            <strong>Reason:</strong> <span th:text="${failureReason}"></span>
+        </div>
+
+        <!-- Payment Details -->
+        <p class="section-title">Payment Details</p>
+        <div class="info-card">
+            <div class="info-row">
+                <span class="info-label">Order ID</span>
+                <span class="info-value">#<span th:text="${orderId}"></span></span>
+            </div>
+            <div class="info-row" th:if="${paymentId != null}">
+                <span class="info-label">Payment ID</span>
+                <span class="info-value" th:text="${paymentId}"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Amount</span>
+                <span th:class="${paymentStatus == 'SUCCESS'} ? 'amount-highlight' : 'amount-failed'">
+                    ₹<span th:text="${#numbers.formatDecimal(amount, 1, 2)}"></span>
+                </span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Status</span>
+                <span class="info-value" th:text="${paymentStatus}"></span>
+            </div>
+        </div>
+
+        <div class="cta">
+            <a th:href="${frontendUrl + '/orders.html'}"
+               th:class="${paymentStatus == 'SUCCESS'} ? 'cta cta-success' : 'cta cta-failed'">
+                View My Orders
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Need help? Contact our support team.</p>
+        <p>© 2025 E-Commerce Store. All rights reserved.</p>
+    </div>
+</div>
+</body>
+</html>

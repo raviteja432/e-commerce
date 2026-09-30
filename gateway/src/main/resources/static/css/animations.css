@@ -1,0 +1,341 @@
+/* ==========================================================================
+   APEXMARKET — ANIMATIONS & MICRO-INTERACTIONS
+   Keyframes, skeleton loaders, page transitions, hover effects
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   KEYFRAMES
+   -------------------------------------------------------------------------- */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-down {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slide-right {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-left {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.3); }
+  50%       { box-shadow: 0 0 40px rgba(124, 58, 237, 0.6); }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes toast-out {
+  from { opacity: 1; transform: translateX(0); max-height: 100px; }
+  to   { opacity: 0; transform: translateX(100%); max-height: 0; margin: 0; padding: 0; }
+}
+
+@keyframes bar-grow {
+  from { height: 0; }
+}
+
+@keyframes orb-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(30px, -20px) scale(1.05); }
+  66%  { transform: translate(-20px, 15px) scale(0.97); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes bounce-in {
+  0%   { transform: scale(0.3); opacity: 0; }
+  50%  { transform: scale(1.05); opacity: 0.9; }
+  70%  { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* --------------------------------------------------------------------------
+   PAGE ENTER ANIMATION
+   -------------------------------------------------------------------------- */
+.page-enter {
+  animation: fade-up 0.35s ease forwards;
+}
+
+.section-enter {
+  animation: fade-up 0.4s ease forwards;
+}
+
+/* Staggered card entries */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.10s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.20s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.30s; }
+
+/* --------------------------------------------------------------------------
+   SKELETON LOADERS
+   -------------------------------------------------------------------------- */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-secondary) 25%,
+    var(--bg-card-hover) 50%,
+    var(--bg-secondary) 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+/* Named skeleton shapes */
+.skeleton-text  { height: 14px; border-radius: var(--radius-sm); margin-bottom: 8px; }
+.skeleton-title { height: 22px; border-radius: var(--radius-sm); margin-bottom: 12px; }
+.skeleton-img   { height: 200px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+.skeleton-circle { border-radius: var(--radius-full); }
+.skeleton-btn   { height: 38px; border-radius: var(--radius-md); }
+.skeleton-badge { height: 20px; width: 60px; border-radius: var(--radius-full); }
+
+/* Product card skeleton */
+.product-skeleton {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.product-skeleton-img {
+  height: 220px;
+}
+.product-skeleton-body {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Stat card skeleton */
+.stat-skeleton {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Table row skeleton */
+.table-skeleton-row td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* --------------------------------------------------------------------------
+   LOADING SPINNER
+   -------------------------------------------------------------------------- */
+.spinner {
+  width: 24px; height: 24px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--border);
+  border-top-color: var(--primary);
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+.spinner-sm { width: 16px; height: 16px; border-width: 2px; }
+.spinner-lg { width: 40px; height: 40px; border-width: 3px; }
+
+/* Full page loading overlay */
+.page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-20);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+/* --------------------------------------------------------------------------
+   HERO ANIMATIONS
+   -------------------------------------------------------------------------- */
+.hero-orb-1 { animation: orb-drift 8s ease-in-out infinite; }
+.hero-orb-2 { animation: orb-drift 10s ease-in-out infinite reverse; }
+
+.hero-title { animation: fade-up 0.6s ease forwards; opacity: 0; }
+.hero-desc  { animation: fade-up 0.6s ease 0.15s forwards; opacity: 0; }
+.hero-actions { animation: fade-up 0.6s ease 0.3s forwards; opacity: 0; }
+.hero-stats { animation: fade-up 0.6s ease 0.45s forwards; opacity: 0; }
+
+/* --------------------------------------------------------------------------
+   HOVER & INTERACTION EFFECTS
+   -------------------------------------------------------------------------- */
+
+/* Lift on hover */
+.hover-lift {
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Glow on hover */
+.hover-glow:hover {
+  box-shadow: var(--shadow-primary);
+}
+
+/* Scale on hover */
+.hover-scale {
+  transition: transform var(--transition-fast);
+}
+.hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* Clickable rows in table */
+.row-clickable {
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.row-clickable:hover { background: var(--bg-card-hover) !important; }
+
+/* --------------------------------------------------------------------------
+   BAR CHART ANIMATION
+   -------------------------------------------------------------------------- */
+.bar-fill {
+  animation: bar-grow 0.8s ease backwards;
+}
+.bar-fill:nth-child(1) { animation-delay: 0.0s; }
+.bar-fill:nth-child(2) { animation-delay: 0.1s; }
+.bar-fill:nth-child(3) { animation-delay: 0.2s; }
+.bar-fill:nth-child(4) { animation-delay: 0.3s; }
+.bar-fill:nth-child(5) { animation-delay: 0.4s; }
+.bar-fill:nth-child(6) { animation-delay: 0.5s; }
+.bar-fill:nth-child(7) { animation-delay: 0.6s; }
+
+/* --------------------------------------------------------------------------
+   STAT CARD COUNTER ANIMATION (JS-driven via CSS transitions)
+   -------------------------------------------------------------------------- */
+.stat-card-value {
+  transition: opacity 0.4s ease;
+}
+.stat-card-value.counting {
+  opacity: 0.6;
+}
+
+/* --------------------------------------------------------------------------
+   ANIMATED GRADIENT BUTTON
+   -------------------------------------------------------------------------- */
+.btn-animated-gradient {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4, #7c3aed);
+  background-size: 200% auto;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* --------------------------------------------------------------------------
+   FLOATING ACTION BUTTON
+   -------------------------------------------------------------------------- */
+.fab {
+  position: fixed;
+  bottom: 32px; right: 32px;
+  width: 56px; height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-brand);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow-primary);
+  cursor: pointer;
+  border: none;
+  z-index: var(--z-sticky);
+  transition: all var(--transition-base);
+  animation: bounce-in 0.5s ease;
+}
+.fab svg { width: 24px; height: 24px; }
+.fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.6);
+}
+.fab:active { transform: scale(0.95); }
+
+/* --------------------------------------------------------------------------
+   NOTIFICATION DOT (pulsing)
+   -------------------------------------------------------------------------- */
+.notif-dot {
+  position: absolute;
+  top: 2px; right: 2px;
+  width: 8px; height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--danger);
+  border: 2px solid var(--bg-base);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* --------------------------------------------------------------------------
+   SUCCESS CHECKMARK ANIMATION
+   -------------------------------------------------------------------------- */
+@keyframes check-draw {
+  from { stroke-dashoffset: 100; }
+  to   { stroke-dashoffset: 0; }
+}
+.success-icon circle { animation: scale-in 0.4s ease; }
+.success-icon path {
+  stroke-dasharray: 100;
+  animation: check-draw 0.5s ease 0.3s forwards;
+  stroke-dashoffset: 100;
+}
+
+/* --------------------------------------------------------------------------
+   SMOOTH CONTENT REVEAL (Intersection Observer compatible)
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

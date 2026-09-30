@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Order Status Update</title>
+    <style>
+        body { margin: 0; padding: 0; background: #f4f6f9; font-family: 'Segoe UI', Arial, sans-serif; }
+        .wrapper { max-width: 620px; margin: 30px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        /* Dynamic header color per status */
+        .header { padding: 40px 30px; text-align: center; }
+        .header-PROCESSING { background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%); }
+        .header-SHIPPED    { background: linear-gradient(135deg, #4776e6 0%, #8e54e9 100%); }
+        .header-DELIVERED  { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .header-CANCELLED  { background: linear-gradient(135deg, #c94b4b 0%, #4b134f 100%); }
+        .header h1 { color: #fff; margin: 0; font-size: 26px; font-weight: 700; }
+        .header p  { color: rgba(255,255,255,0.85); margin: 8px 0 0; font-size: 15px; }
+        .badge { display: inline-block; background: rgba(255,255,255,0.2); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 13px; margin-top: 14px; }
+        .body { padding: 32px 30px; }
+        .greeting { font-size: 18px; color: #1a1a2e; font-weight: 600; margin-bottom: 8px; }
+        .intro { color: #6b7280; font-size: 15px; line-height: 1.6; margin-bottom: 28px; }
+        .section-title { font-size: 13px; font-weight: 700; color: #6366f1; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        .info-card { background: #f8f9ff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px 20px; margin-bottom: 20px; }
+        .info-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { color: #6b7280; }
+        .info-value { color: #1a1a2e; font-weight: 600; }
+        .cta { text-align: center; margin: 28px 0; }
+        .cta a { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; display: inline-block; }
+        .footer { background: #f8f9ff; padding: 22px 30px; text-align: center; border-top: 1px solid #e5e7eb; }
+        .footer p { color: #9ca3af; font-size: 13px; margin: 4px 0; }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header"
+         th:class="${'header header-' + newStatus}">
+        <h1 th:switch="${newStatus}">
+            <span th:case="'PROCESSING'">⚙️ Order Being Prepared</span>
+            <span th:case="'SHIPPED'">🚚 Order Shipped!</span>
+            <span th:case="'DELIVERED'">📦 Order Delivered!</span>
+            <span th:case="'CANCELLED'">❌ Order Cancelled</span>
+            <span th:case="*">Order Update</span>
+        </h1>
+        <p th:switch="${newStatus}">
+            <span th:case="'PROCESSING'">Your order is being prepared by the seller</span>
+            <span th:case="'SHIPPED'">Your package is on its way</span>
+            <span th:case="'DELIVERED'">Your order has been delivered</span>
+            <span th:case="'CANCELLED'">Your order has been cancelled</span>
+            <span th:case="*">Your order status has been updated</span>
+        </p>
+        <span class="badge">Order #<span th:text="${orderId}"></span></span>
+    </div>
+
+    <div class="body">
+        <p class="greeting">Hi <span th:text="${customerName}"></span>,</p>
+        <p class="intro" th:switch="${newStatus}">
+            <span th:case="'PROCESSING'">Great news! Your order is now being prepared by our seller. We'll let you know when it's on its way.</span>
+            <span th:case="'SHIPPED'">Your order has been shipped and is on its way to you! Track it using the details below.</span>
+            <span th:case="'DELIVERED'">Your order has been delivered. We hope you love your purchase! If there are any issues, please contact support.</span>
+            <span th:case="'CANCELLED'">Your order has been cancelled. If you paid online, a refund will be processed within 5–7 business days.</span>
+            <span th:case="*">Your order status has been updated. Log in to view the latest details.</span>
+        </p>
+
+        <p class="section-title">Order Details</p>
+        <div class="info-card">
+            <div class="info-row">
+                <span class="info-label">Order ID</span>
+                <span class="info-value">#<span th:text="${orderId}"></span></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Status</span>
+                <span class="info-value" th:text="${newStatus}"></span>
+            </div>
+            <div class="info-row" th:if="${trackingNumber != null}">
+                <span class="info-label">Tracking Number</span>
+                <span class="info-value" th:text="${trackingNumber}"></span>
+            </div>
+            <div class="info-row" th:if="${cancellationReason != null}">
+                <span class="info-label">Cancellation Reason</span>
+                <span class="info-value" th:text="${cancellationReason}"></span>
+            </div>
+        </div>
+
+        <div class="cta">
+            <a th:href="${frontendUrl + '/orders.html'}">View My Orders</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Need help? Contact our support team.</p>
+        <p>© 2025 E-Commerce Store. All rights reserved.</p>
+    </div>
+</div>
+</body>
+</html>

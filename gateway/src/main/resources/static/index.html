@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>ApexMarket | Premium E-Commerce Experience</title>
+  <meta name="description" content="Shop the finest selection of premium products. Secure checkout, fast delivery, and specialized vendor dashboards. Powered by a robust microservices architecture.">
+  <meta name="keywords" content="e-commerce, shopping, secure payments, premium dashboard, online store, vendor panel">
+  <meta name="author" content="Antigravity Team">
+  
+  <!-- Font and Stylesheets -->
+  <link rel="stylesheet" href="css/design-system.css?v=1.0.10">
+  <link rel="stylesheet" href="css/components.css?v=1.0.10">
+  <link rel="stylesheet" href="css/layout.css?v=1.0.10">
+  <link rel="stylesheet" href="css/animations.css?v=1.0.10">
+
+  <!-- Profile Dropdown Critical CSS — loaded inline to avoid cache issues -->
+  <style>
+    .profile-dropdown-container {
+      position: relative;
+      z-index: 10000;
+    }
+    #profile-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: 240px;
+      background: var(--bg-card, #17172a);
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      padding: 8px;
+      z-index: 10001;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      /* Hidden by default using visibility+opacity instead of display:none
+         so .show class doesn't fight d-none's display:none !important */
+      display: flex;
+      flex-direction: column;
+      visibility: hidden;
+    }
+    #profile-dropdown-menu.show {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+  </style>
+  
+  <!-- Lucide Icons (CDN) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div id="app-root">
+    
+    <!-- Transparent Glass Header -->
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="#/" class="site-logo" id="header-logo-link">
+          <div class="site-logo-icon">
+            <i data-lucide="shopping-bag"></i>
+          </div>
+          <span class="site-logo-text">ApexMarket</span>
+        </a>
+        
+        <!-- Primary Navigation -->
+        <nav class="header-nav">
+          <a href="#/" class="nav-link active" id="nav-home">
+            <i data-lucide="store"></i>
+            <span>Shop</span>
+          </a>
+          <a href="#/products" class="nav-link" id="nav-catalog">
+            <i data-lucide="grid"></i>
+            <span>Products</span>
+          </a>
+          <a href="#/orders" class="nav-link d-none" id="nav-orders">
+            <i data-lucide="package"></i>
+            <span>My Orders</span>
+          </a>
+          <a href="#/vendor-dashboard" class="nav-link d-none vendor-link" id="nav-vendor-dash">
+            <i data-lucide="award"></i>
+            <span>Vendor Panel</span>
+          </a>
+          <a href="#/admin-dashboard" class="nav-link d-none admin-link" id="nav-admin-dash">
+            <i data-lucide="shield"></i>
+            <span>Admin Panel</span>
+          </a>
+        </nav>
+        
+        <!-- Action Buttons -->
+        <div class="header-actions">
+          <!-- Light/Dark Mode Switch -->
+          <button class="theme-btn" id="theme-toggle-btn" title="Toggle Theme" aria-label="Toggle Theme">
+            <i data-lucide="sun" id="theme-icon"></i>
+          </button>
+          
+          <!-- Shopping Cart Badge -->
+          <button class="cart-btn" id="cart-badge-btn" title="View Cart" aria-label="View Cart">
+            <i data-lucide="shopping-cart"></i>
+            <span class="cart-badge d-none" id="cart-count">0</span>
+          </button>
+          
+          <!-- User Profile / Auth Toggle -->
+          <div class="profile-dropdown-container">
+            <button type="button" class="auth-btn" id="auth-action-btn">
+              <div class="header-avatar" id="header-avatar" style="display:none"></div>
+              <span id="auth-btn-text">Sign In</span>
+            </button>
+            <div class="profile-dropdown-menu" id="profile-dropdown-menu">
+              <!-- User info header - populated by JS -->
+              <div class="profile-dropdown-header" id="dropdown-user-header">
+                <div class="profile-dropdown-avatar" id="dropdown-user-avatar">U</div>
+                <div style="flex:1; min-width:0">
+                  <div class="profile-dropdown-user-name" id="dropdown-user-name">User</div>
+                  <div class="profile-dropdown-user-email" id="dropdown-user-email">Loading...</div>
+                </div>
+              </div>
+              <a href="#/admin-dashboard" class="profile-dropdown-item d-none" id="dropdown-link-admin">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Admin Panel</span>
+              </a>
+              <a href="#/vendor-dashboard" class="profile-dropdown-item d-none" id="dropdown-link-vendor">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M21 9H3"/><path d="M12 3v18"/></svg>
+                <span>Vendor Panel</span>
+              </a>
+              <a href="#/profile" class="profile-dropdown-item" id="dropdown-link-profile">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>My Profile</span>
+              </a>
+              <a href="#/orders" class="profile-dropdown-item" id="dropdown-link-orders">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>My Orders</span>
+              </a>
+              <a href="#/wallet" class="profile-dropdown-item" id="dropdown-link-wallet">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M16 12h2"/><circle cx="16" cy="12" r="1"/></svg>
+                <span>App Wallet</span>
+              </a>
+              <div class="profile-dropdown-divider"></div>
+              <button type="button" class="profile-dropdown-item" id="header-logout-btn" style="color: var(--danger)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Dynamic View Injected Here -->
+    <main id="app-content" class="fade-in">
+      <!-- Loading Skeleton (Default before JS loads) -->
+      <div class="page-container" style="margin-top: 40px;">
+        <div class="skeleton skeleton-title" style="width: 30%;"></div>
+        <div class="skeleton skeleton-text" style="width: 70%;"></div>
+        <div class="skeleton skeleton-text" style="width: 40%;"></div>
+        <div class="product-grid" style="margin-top: 40px;">
+          <div class="product-skeleton">
+            <div class="skeleton product-skeleton-img"></div>
+            <div class="product-skeleton-body">
+              <div class="skeleton skeleton-text" style="width:40%"></div>
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-text" style="width:60%"></div>
+              <div class="skeleton skeleton-btn" style="margin-top:8px"></div>
+            </div>
+          </div>
+          <div class="product-skeleton">
+            <div class="skeleton product-skeleton-img"></div>
+            <div class="product-skeleton-body">
+              <div class="skeleton skeleton-text" style="width:40%"></div>
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-text" style="width:60%"></div>
+              <div class="skeleton skeleton-btn" style="margin-top:8px"></div>
+            </div>
+          </div>
+          <div class="product-skeleton">
+            <div class="skeleton product-skeleton-img"></div>
+            <div class="product-skeleton-body">
+              <div class="skeleton skeleton-text" style="width:40%"></div>
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-text" style="width:60%"></div>
+              <div class="skeleton skeleton-btn" style="margin-top:8px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+  </div>
+
+  <!-- Reusable Modal Dialog Box Overlay -->
+  <div class="modal-overlay" id="app-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Details</h3>
+        <button class="modal-close" id="modal-close-btn" aria-label="Close Modal">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- JS injects custom forms or detail boxes here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Toast Notifications Box -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Stripe JS (Included dynamically for checkout) -->
+  <script src="https://js.stripe.com/v3/"></script>
+
+  <!-- Core App Logic -->
+  <script type="module" src="js/app.js?v=1.0.12"></script>
+</body>
+</html>

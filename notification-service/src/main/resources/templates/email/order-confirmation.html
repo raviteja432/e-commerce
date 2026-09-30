@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Order Confirmed</title>
+    <style>
+        body { margin: 0; padding: 0; background: #f4f6f9; font-family: 'Segoe UI', Arial, sans-serif; }
+        .wrapper { max-width: 620px; margin: 30px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center; }
+        .header h1 { color: #fff; margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+        .header p { color: rgba(255,255,255,0.85); margin: 8px 0 0; font-size: 15px; }
+        .badge { display: inline-block; background: rgba(255,255,255,0.2); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 13px; margin-top: 14px; }
+        .body { padding: 32px 30px; }
+        .greeting { font-size: 18px; color: #1a1a2e; font-weight: 600; margin-bottom: 8px; }
+        .intro { color: #6b7280; font-size: 15px; line-height: 1.6; margin-bottom: 28px; }
+        .section-title { font-size: 13px; font-weight: 700; color: #6366f1; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        .info-card { background: #f8f9ff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px 20px; margin-bottom: 20px; }
+        .info-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { color: #6b7280; }
+        .info-value { color: #1a1a2e; font-weight: 600; }
+        .items-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .items-table th { background: #f3f4f6; color: #374151; font-size: 13px; padding: 10px 14px; text-align: left; }
+        .items-table td { padding: 12px 14px; font-size: 14px; color: #374151; border-bottom: 1px solid #f3f4f6; }
+        .items-table tr:last-child td { border-bottom: none; }
+        .total-row { background: #f8f9ff; font-weight: 700; }
+        .total-amount { color: #6366f1; font-size: 16px; }
+        .cta { text-align: center; margin: 28px 0; }
+        .cta a { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; display: inline-block; }
+        .footer { background: #f8f9ff; padding: 22px 30px; text-align: center; border-top: 1px solid #e5e7eb; }
+        .footer p { color: #9ca3af; font-size: 13px; margin: 4px 0; }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <!-- Header -->
+    <div class="header">
+        <h1>🎉 Order Confirmed!</h1>
+        <p>Thank you for your purchase</p>
+        <span class="badge">Order #<span th:text="${orderId}"></span></span>
+    </div>
+
+    <!-- Body -->
+    <div class="body">
+        <p class="greeting">Hi <span th:text="${customerName}"></span>,</p>
+        <p class="intro">
+            We've received your order and it's being processed. You'll receive another email
+            once your items are on their way.
+        </p>
+
+        <!-- Order Info -->
+        <p class="section-title">Order Details</p>
+        <div class="info-card">
+            <div class="info-row">
+                <span class="info-label">Order ID</span>
+                <span class="info-value">#<span th:text="${orderId}"></span></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Payment Method</span>
+                <span class="info-value" th:text="${paymentMethod}"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Shipping To</span>
+                <span class="info-value" th:text="${shippingAddress}"></span>
+            </div>
+        </div>
+
+        <!-- Items Table -->
+        <p class="section-title">Items Ordered</p>
+        <table class="items-table">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${items}">
+                <td th:text="${item.productName}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td>₹<span th:text="${#numbers.formatDecimal(item.price, 1, 2)}"></span></td>
+            </tr>
+            <tr class="total-row">
+                <td colspan="2"><strong>Total</strong></td>
+                <td class="total-amount">₹<span th:text="${#numbers.formatDecimal(totalAmount, 1, 2)}"></span></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- CTA -->
+        <div class="cta">
+            <a th:href="${frontendUrl + '/orders.html'}">View My Orders</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Need help? Contact our support team.</p>
+        <p>© 2025 E-Commerce Store. All rights reserved.</p>
+    </div>
+</div>
+</body>
+</html>
